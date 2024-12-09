@@ -13,6 +13,7 @@
       apt:
         name: unzip
         state: present
+        update_cache: yes
 
     - name: Download Tomcat
       get_url:
@@ -33,11 +34,8 @@
         url: https://www.free-css.com/assets/files/free-css-templates/download/page296/healet.zip
         dest: /home/ubuntu/apache-tomcat-9.0.97/webapps/healet.zip
 
-    - name: Unarchive Healet Template
-      unarchive:
-        src: /home/ubuntu/apache-tomcat-9.0.97/webapps/healet.zip
-        dest: /home/ubuntu/apache-tomcat-9.0.97/webapps/
-        remote_src: true
+    - name: Unarchive Healet Template using unzip
+      command: unzip /home/ubuntu/apache-tomcat-9.0.97/webapps/healet.zip -d /home/ubuntu/apache-tomcat-9.0.97/webapps/
 
     - name: Remove Healet.zip
       file:
