@@ -9,6 +9,11 @@
         state: present
         update_cache: yes
 
+    - name: Install unzip
+      apt:
+        name: unzip
+        state: present
+
     - name: Download Tomcat
       get_url:
         url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.97/bin/apache-tomcat-9.0.97.tar.gz
