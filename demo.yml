@@ -1,36 +1,39 @@
 ---
-- name: tomcat installation
+- name: Tomcat installation
   hosts: servers
   become: false
   tasks:
-    - name: java
+    - name: Install Java
       apt:
-        name: java
+        name: openjdk-8-jdk
         state: present
 
-    - name: tomcat
+    - name: Download Tomcat
       get_url:
         url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.97/bin/apache-tomcat-9.0.97.tar.gz
-        dest: /home/ubuntu
+        dest: /home/ubuntu/apache-tomcat-9.0.97.tar.gz
 
-    - name: unarchive
+    - name: Unarchive Tomcat
       unarchive:
-        src: /home/ubuntu/apache-tomcat-9.0.97
+        src: /home/ubuntu/apache-tomcat-9.0.97.tar.gz
         dest: /home/ubuntu/
         remote_src: true
 
-    - name: start tomcat
-      shell: /home/ubuntu/apache-tomcat-9.0.97/bin/startup.sh start
+    - name: Start Tomcat
+      shell: /home/ubuntu/apache-tomcat-9.0.97/bin/startup.sh
 
-    - name: download template
+    - name: Download Healet Template
       get_url:
         url: https://www.free-css.com/assets/files/free-css-templates/download/page296/healet.zip
-        dest: /home/ubuntu/apache-tomcat-9.0.97/webapps/
+        dest: /home/ubuntu/apache-tomcat-9.0.97/webapps/healet.zip
 
-    - name: unarchive mediplus-lite.zip
+    - name: Unarchive Healet Template
       unarchive:
         src: /home/ubuntu/apache-tomcat-9.0.97/webapps/healet.zip
-        dest: /home/ubuntu/apache-tomcat-9.0.97/webapps
+        dest: /home/ubuntu/apache-tomcat-9.0.97/webapps/
         remote_src: true
-    - name: remove healet.zip
-      shell: rm -rvf /home/ubuntu/apache-tomcat-9.0.97/webapps/healet.zip
+
+    - name: Remove Healet.zip
+      file:
+        path: /home/ubuntu/apache-tomcat-9.0.97/webapps/healet.zip
+        state: absent
