@@ -1,0 +1,36 @@
+services:
+  backend:
+    build:
+      context: /root/mymilestono/server
+    ports:
+      - "6005:6005"
+    environment:
+      - PORT=6005
+      - MONGO_URI=mongodb://admin:Kira%401845@mongo:27018/milestono?authSource=admin
+    volumes:
+      - /ssl/live/api.milestono.com:/etc/letsencrypt/live/api.milestono.com:ro
+      - /etc/letsencrypt/archive:/etc/letsencrypt/archive:ro
+    networks:
+      - app-network
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+    init: true
+    restart: unless-stopped
+    command: mongod --auth --wiredTigerCacheSizeGB 1
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
